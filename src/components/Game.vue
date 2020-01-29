@@ -1,5 +1,6 @@
 <template>
   <div class="game">
+    version 0.0.1
     <button @click="sendPing()">
       Пинг
     </button>
