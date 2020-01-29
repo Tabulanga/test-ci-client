@@ -1,17 +1,34 @@
-name: CI
+name: CI-CDd
+env:
+  EB_PACAGE_S3_BACKET_NAME: "maestrto69"
+  EB_APLICATION_NAME      : "My-OMV"
+  EB_ENVIRONMENT_NAME     : "MyOmv-env"
+  AWS_REGION_NAME         : "us-east-2"
+  
 
-on: [push]
+
+on:
+  push:
+    branches:
+      - master
 
 jobs:
-  build:
-
-    runs-on: ubuntu-latest
-
+  mi-ci-part:
+    runs-on: [ubuntu-18.04]
     steps:
-    - uses: actions/checkout@v1
-    - name: Run a one-line script
-      run: echo Hello, world!
-    - name: Run a multi-line script
-      run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+      - name: Git clone my repo
+        uses: actions/checkout@v1
+        
+      - name: Configure my AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id     : ${{ secrets.MY_AWS_ACCESS_KEY }}
+          aws-secret-access-key : ${{ secrets.MY_AWS_SECRET_KEY }}
+          aws-region        : ${{ env.AWS_REGION_NAME }}
+        
+      - name: Build and push
+        run: |
+          docker build -t app2 .
+          $(aws ecr get-login --no-include-email --region us-east-2)
+          docker tag app2:latest 951264400542.dkr.ecr.us-east-2.amazonaws.com/app2:latest
+          docker push 951264400542.dkr.ecr.us-east-2.amazonaws.com/app2:latest
