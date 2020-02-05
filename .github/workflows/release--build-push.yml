@@ -2,9 +2,9 @@ name: Release build and push to Docker Hub
 
 on:
   push:
-    # tags:
-    #   - 'v*'
-    #   - '!v*-rc*'
+    tags:
+      - 'v*'
+      - '!v*-rc*'
 
 jobs:
   build:
@@ -33,15 +33,14 @@ jobs:
 
       - name: Build image
         run: |
-        echo ${{ steps.get_env.outputs.NAME }}
-      #     docker build -t app2 .
+          docker build -t app2 .
 
-      # - name: Set tags
-      #   run: |
-      #     docker tag app2:latest omegalab/${{ steps.get_env.outputs.NAME }}:latest
-      #     docker tag app2:latest omegalab/${{ steps.get_env.outputs.NAME }}:${{ steps.get_env.outputs.VERSION }}
+      - name: Set tags
+        run: |
+          docker tag app2:latest omegalab/${{ steps.get_env.outputs.NAME }}:latest
+          docker tag app2:latest omegalab/${{ steps.get_env.outputs.NAME }}:${{ steps.get_env.outputs.VERSION }}
 
-      # - name: Push to Docker Hub
-      #   run: |
-      #     docker push omegalab/${{ steps.get_env.outputs.NAME }}:${{ steps.get_env.outputs.VERSION }}
-      #     docker push omegalab/${{ steps.get_env.outputs.NAME }}:latest
+      - name: Push to Docker Hub
+        run: |
+          docker push omegalab/${{ steps.get_env.outputs.NAME }}:${{ steps.get_env.outputs.VERSION }}
+          docker push omegalab/${{ steps.get_env.outputs.NAME }}:latest
