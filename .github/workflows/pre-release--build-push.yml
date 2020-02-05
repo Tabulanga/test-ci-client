@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v1
 
       - name: Get the version from tag
-        id: get_version
+        id: get_env
         run: | 
           echo ::set-output name=VERSION::${GITHUB_REF##*v}
           echo ::set-output name=NAME::${GITHUB_REPOSITORY#*/}
@@ -37,9 +37,9 @@ jobs:
       - name: Set tags
         run: |
           docker tag app2:latest omegalab/${{ steps.get_env.outputs.NAME }}:develop
-          docker tag app2:latest omegalab/${{ steps.get_env.outputs.NAME }}:${{ steps.get_version.outputs.VERSION }}
+          docker tag app2:latest omegalab/${{ steps.get_env.outputs.NAME }}:${{ steps.get_env.outputs.VERSION }}
 
       - name: Push to Docker Hub
         run: |
-          docker push omegalab/${{ steps.get_env.outputs.NAME }}:${{ steps.get_version.outputs.VERSION }}
+          docker push omegalab/${{ steps.get_env.outputs.NAME }}:${{ steps.get_env.outputs.VERSION }}
           docker push omegalab/${{ steps.get_env.outputs.NAME }}:develop
