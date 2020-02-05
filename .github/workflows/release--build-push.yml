@@ -33,7 +33,7 @@ jobs:
 
       - name: Build image
         run: |
-        echo ${{ steps.get_env.outputs.NAME }}
+          echo ${{ steps.get_env.outputs.NAME }}
       #     docker build -t app2 .
 
       # - name: Set tags
